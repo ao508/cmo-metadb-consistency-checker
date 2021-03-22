@@ -145,5 +145,4 @@ public class ConsistencyCheckerUtil {
         // see example iterator set up in getOrderedRequestSamplesJson()
         return node;
     }
-
 }
