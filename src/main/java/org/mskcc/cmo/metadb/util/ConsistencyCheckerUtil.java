@@ -1,4 +1,5 @@
 package org.mskcc.cmo.metadb.util;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -49,6 +50,7 @@ public class ConsistencyCheckerUtil {
                     targetFilteredJsonMap.get("requestNode"), JSONCompareMode.STRICT);
             JSONAssert.assertEquals(referenceFilteredJsonMap.get("samplesNode"),
                     targetFilteredJsonMap.get("samplesNode"), JSONCompareMode.STRICT);
+
             assertResponse = true;
             //fileUtil.writeToFile(loggerFile, SUCCESSFUL_CONSISTENCY_CHECK);
         } catch(Exception e) {
