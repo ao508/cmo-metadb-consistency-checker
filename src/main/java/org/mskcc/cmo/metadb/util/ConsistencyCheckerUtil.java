@@ -3,6 +3,8 @@ package org.mskcc.cmo.metadb.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import org.apache.commons.lang3.StringUtils;
 import org.mskcc.cmo.common.FileUtil;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -13,10 +15,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import com.google.common.base.Strings;
 
 @Component
 public class ConsistencyCheckerUtil {
@@ -139,10 +144,20 @@ public class ConsistencyCheckerUtil {
                 node.remove(field);
             }
         }
-        // check value of node, if empty or null then remove also
-        // will need to iterate through the node itself after
-        // going through and removing the ignored fields above
-        // see example iterator set up in getOrderedRequestSamplesJson()
+
+        Iterator<String> itr = node.fieldNames();
+        List<String> removeFieldNames = new ArrayList<>();
+        while (itr.hasNext()) {
+            String fieldName = itr.next();
+            JsonNode value = node.get(fieldName);
+            if (Strings.isNullOrEmpty(value.asText())) {
+                removeFieldNames.add(fieldName);
+            }
+        }
+        System.out.println(StringUtils.join(removeFieldNames, ", "));
+        for (String field : removeFieldNames) {
+            node.remove(field); 
+        }
         return node;
     }
 }
