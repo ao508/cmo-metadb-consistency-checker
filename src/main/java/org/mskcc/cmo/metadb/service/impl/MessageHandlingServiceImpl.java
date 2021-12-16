@@ -230,7 +230,7 @@ public class MessageHandlingServiceImpl implements MessageHandlingService {
             LOG.debug("Checking if request is ready for consistency checking: " + incomingRequestId);
             ConsistencyCheckerRequest igoNewRequest = igoNewRequestMessagesReceived.get(incomingRequestId);
             if (consistencyCheckerMessagesReceived.containsKey(incomingRequestId)) {
-                LOG.debug("Found same request in both queues: " + incomingRequestId);
+                LOG.info("Found same request in both queues: " + incomingRequestId);
 
                 // add to consistency checking queue if request is in both sets of messages received
                 ConsistencyCheckerRequest consistencyCheckRequest =
